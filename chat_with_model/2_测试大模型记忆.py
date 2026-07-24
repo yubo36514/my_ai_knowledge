@@ -1,6 +1,5 @@
 from openai import OpenAI
 
-
 client=OpenAI(
     base_url="https://ws-xnlgatus0aaqvdlt.cn-beijing.maas.aliyuncs.com/compatible-mode/v1"
 )
