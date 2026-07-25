@@ -6,7 +6,7 @@ chat_history=[
     # SystemMessage(content='你是谁'),
     # HumanMessage(content='你是谁')
     ('system','你是一个出色的ai老师'),
-    ('user','你是谁')
+    ('human','你是谁')
 ]
 
 result=llm.stream(input=chat_history)

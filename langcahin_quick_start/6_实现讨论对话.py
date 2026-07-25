@@ -18,8 +18,8 @@ class MutiTurnChat():
         full_reply = ""
         result=self.llm.stream(input=self.chat_history)
         for chunk in result:
-            full_reply += chunk.content
             print(chunk.content,end='', flush=True)
+            full_reply += chunk.content
         print()
 
         self.add_ai_message(full_reply)
