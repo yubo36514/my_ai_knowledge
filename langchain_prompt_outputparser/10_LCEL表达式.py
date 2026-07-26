@@ -78,6 +78,8 @@ parser = StrOutputParser()
 # 2. 使用三个 | 串联
 chain = prompt | model | parser
 
+print("=== 模拟 PromptTemplate | Model ===\n")
+
 # 3. 执行
 result = chain.invoke({"user_input": "你好"})
 
