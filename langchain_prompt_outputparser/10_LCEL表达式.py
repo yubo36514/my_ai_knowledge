@@ -22,6 +22,8 @@ class Model:
     def __or__(self, next_component):
         return RunnableSequence(self, next_component)
 
+
+
     def invoke(self, input_text):
         # 模拟模型生成回复
         if "你好" in input_text:
