@@ -17,7 +17,7 @@ few_shot_template=FewShotPromptTemplate(
     input_variables=["input"]
 
 )
-prompt_text=few_shot_template.format(input="高兴")
+prompt_text=few_shot_template.format(input="高兴")  #.format 关键字传入
 print(type(few_shot_template))
 print(few_shot_template)
 print(prompt_text)
