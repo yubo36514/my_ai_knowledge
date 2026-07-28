@@ -14,8 +14,8 @@ import logging
 
 log = logging.getLogger(__name__)
 
-CONFIDENCE_THRESHOLD = 0.3
-RECENT_MESSAGES = 3 * 2
+CONFIDENCE_THRESHOLD = 0.3  # 意图识别的置信度阈值
+RECENT_MESSAGES = 3 * 2  #最近3轮的历史消息
 
 
 def _handle_low_confidence(
@@ -51,19 +51,21 @@ class ChatService:
         if not os.environ.get('DASHSCOPE_API_KEY'):
             raise RuntimeError('DASHSCOPE_API_KEY not set')
 
+        # 意图识别模型
         self.__intent_recognizer = IntentRecognizer(ChatTongyi(model=INTENT_RECONIZE_MODEL))
+        # 大模型
         self.__llm = ChatTongyi(model=TONGYI_MODEL)
         self.__memory_cache: dict[str, Memory] = {}
 
     def __get_memory(self, chat_session_id: str) -> Memory:
         if chat_session_id not in self.__memory_cache:
             self.__memory_cache[chat_session_id] = Memory(chat_session_id)
-        return self.__memory_cache[chat_session_id]
+        return self.__memory_cache[chat_session_id]  # 返回的是一个Memory实例对象
 
     def handle(self, request: ChatRequest) -> ChatResponse:
         # 请求开始时间
         start_time = time.time()
-        memory = self.__get_memory(request.chat_session_id)
+        memory = self.__get_memory(request.chat_session_id)  #  获取Memory实例对象
 
         try:
             # 1.意图识别
@@ -80,6 +82,7 @@ class ChatService:
             # 3.确定主要意图，路由到对应链路（lingyu项目不做多意图，只做单意图）
             intents = intent_result.intents
             primary_intent = intents[0] if intents else "general"
+
             # 4.构建 Prompt（不同的意图选择不同的prompt）
             prompt = ChatPromptTemplate.from_messages([
                 ("system", _system_prompt_by_intent(primary_intent)),
