@@ -91,6 +91,7 @@ class ChatService:
             ])
             # 5.记忆管理
             memory_messages = memory.prepare_memory_for_llm()
+            # 返回一个消息列表包括关键事实+摘要+最近消息result
             if len(memory.history.get_messages()) >= 10:
                 print("stop")
             # 6.LLM调用
