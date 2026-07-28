@@ -15,6 +15,10 @@ class ChatHistoryManager:
         """获取当前会话的历史记录对象"""
         if self.chat_session_id not in _session_store:
             _session_store[self.chat_session_id] = InMemoryChatMessageHistory()
+        #     InMemoryChatMessageHistory([
+        #           HumanMessage(content="你好"),
+        #           AIMessage(content="你好，我是 ChatGPT，请开始你的对话吧！")
+        #     ])
         return _session_store[self.chat_session_id]
 
     def get_messages(self) -> List[BaseMessage]:

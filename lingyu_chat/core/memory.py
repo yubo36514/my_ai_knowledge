@@ -10,14 +10,20 @@ SESSION_KEY = "session"
 
 
 class Memory:
-    """记忆管理整合类：组合三个独立管理器"""
+    """记忆管理整合类：组合三个独立管理器
+    事实fact，摘要summary_manager,聊天历史上下文chat_history
+    """
 
     def __init__(self, chat_session_id: str) -> None:
         self.chat_session_id = chat_session_id
         self.session_key = f"{SESSION_KEY}:{chat_session_id}"
         # 初始化三个子管理器
+
+        # 创建聊天历史实例化对象
         self.history = ChatHistoryManager(self.session_key)
+        # 创建摘要实例化对象
         self.summary = SummaryManager(self.session_key)
+        # 创建事实实例化对象
         self.facts = FactManager(self.session_key)
 
     # ========== 对话历史相关（委托） ==========
@@ -58,7 +64,7 @@ class Memory:
 
     # ========== 关键事实相关（委托） ==========
     def get_key_facts(self) -> Dict[str, str]:
-        return self.facts.get_all_facts()
+        return self.facts.get_all_facts()  # 获取所有关键事实，没有值时返回空字典
 
     def update_key_facts(self, facts: Dict[str, str]) -> None:
         self.facts.update_facts(facts)
@@ -97,11 +103,11 @@ class Memory:
     def prepare_memory_for_llm(self) -> List[BaseMessage]:
         """准备传递给LLM的上下文（事实 + 摘要 + 最近消息）"""
         result = []
-
         # 1. 添加关键事实
-        facts = self.facts.get_all_facts()  # 获取关键事实
+        facts = self.facts.get_all_facts()  # 获取所有关键事实
         if facts:
             facts_text = " | ".join([f"{k}:{v}" for k, v in facts.items()])
+            # facts_text: 关键事实 | 关键事实 | 关键事实：字符串类型
             result.append(AIMessage(content=f"[关键事实] {facts_text}"))
         # 2. 添加摘要
         summary = self.summary.get_summary()  # 获取摘要

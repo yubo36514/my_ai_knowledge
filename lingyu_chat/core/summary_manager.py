@@ -49,7 +49,7 @@ class SummaryManager:
         _unsummarized_count[self.chat_session_id] = 0
 
     def should_trigger_summary(self) -> bool:
-        """检查是否达到摘要生成阈值"""
+        """检查是否达到摘要生成阈值 如果为真生成摘要"""
         return self.get_unsummarized_count() >= SUMMARY_BATCH_SIZE
 
 
